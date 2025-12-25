@@ -1,3 +1,7 @@
+.clang-format
+.qtcreator
+
+
 # Prerequisites
 *.d
 

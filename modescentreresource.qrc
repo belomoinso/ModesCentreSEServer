@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/ModesCentreServer.qml</file>
+    </qresource>
+</RCC>
