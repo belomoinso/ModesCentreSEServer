@@ -5,6 +5,7 @@
 ModesCentreModel::ModesCentreModel(QObject* parent) :
     QAbstractListModel(parent)
 {
+    m_yesterdayValues.resize(24);
     m_todayValues.resize(24);
     m_tomorrowValues.resize(24);
 
@@ -13,19 +14,20 @@ ModesCentreModel::ModesCentreModel(QObject* parent) :
 
 void ModesCentreModel::generateValues()
 {
-    const auto d = QDateTime::currentMSecsSinceEpoch();
-    std::srand(d);
+    std::srand(QDateTime::currentMSecsSinceEpoch());
     for (int i = 0; i < 24; ++i)
     {
+        m_yesterdayValues[i] = (static_cast<double>(std::rand() % 10001)) / 100;
         m_todayValues[i] = (static_cast<double>(std::rand() % 10001)) / 100;
         m_tomorrowValues[i] = (static_cast<double>(std::rand() % 10001)) / 100;
     }
-    emit dataChanged(index(0), index(rowCount() - 1), { TodayRole, TomorrowRole });
+    emit dataChanged(index(0), index(rowCount() - 1), { YesterdayRole, TodayRole, TomorrowRole });
 }
 
 QHash<int, QByteArray> ModesCentreModel::roleNames() const
 {
     const static QHash<int, QByteArray> rnames = {
+        { YesterdayRole, QByteArrayLiteral("yesterday") },
         { TodayRole, QByteArrayLiteral("today") },
         { TomorrowRole, QByteArrayLiteral("tomorrow") },
         { HourRole, QByteArrayLiteral("hour") },
@@ -46,6 +48,8 @@ QVariant ModesCentreModel::data(const QModelIndex& index, int role) const
 
     switch (role)
     {
+    case YesterdayRole:
+        return QString::number(m_yesterdayValues.at(row), 'f', 2);
     case TodayRole:
         return QString::number(m_todayValues.at(row), 'f', 2);
     case TomorrowRole:
@@ -65,6 +69,10 @@ bool ModesCentreModel::setData(const QModelIndex& index, const QVariant& value, 
     bool ok = false;
     switch (role)
     {
+    case YesterdayRole:
+        m_yesterdayValues[row] = value.toDouble(&ok);
+        emit dataChanged(index, index, { YesterdayRole });
+        break;
     case TodayRole:
         m_todayValues[row] = value.toDouble(&ok);
         emit dataChanged(index, index, { TodayRole });

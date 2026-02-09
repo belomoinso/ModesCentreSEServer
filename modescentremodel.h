@@ -9,7 +9,8 @@ class ModesCentreModel : public QAbstractListModel
 
     enum ModesCentreRoles
     {
-        TodayRole = Qt::UserRole,
+        YesterdayRole = Qt::UserRole,
+        TodayRole,
         TomorrowRole,
         HourRole
     };
@@ -24,10 +25,12 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
+    QVector<double>& yesterdayValuesRef() { return m_yesterdayValues; }
     QVector<double>& todayValuesRef() { return m_todayValues; }
     QVector<double>& tomorrowValuesRef() { return m_tomorrowValues; }
 
 private:
+    QVector<double> m_yesterdayValues;
     QVector<double> m_todayValues;
     QVector<double> m_tomorrowValues;
 };

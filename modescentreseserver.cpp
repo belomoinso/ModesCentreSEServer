@@ -4,15 +4,15 @@ ModesCentreSEServer::ModesCentreSEServer(QObject* parent) :
     QTcpServer(parent)
 {
     m_model = std::make_unique<ModesCentreModel>();
-    listen(QHostAddress::Any, 8080);
+    listen(QHostAddress::Any, 8081);
 }
 
 QJsonArray ModesCentreSEServer::getValues(const QString& code, int type, QDateTime& date)
 {
     QJsonArray responseArray;
-
     const QDate today = QDate::currentDate();
-    const QVector<double>& values = (date.date() == today) ? m_model->todayValuesRef() : m_model->tomorrowValuesRef();
+    const QVector<double>& values = (date.date() == today) ? m_model->todayValuesRef() : (date.date() == today.addDays(1)) ? m_model->tomorrowValuesRef()
+                                                                                                                           : m_model->yesterdayValuesRef();
 
     for (int i = 0; i < 24; ++i)
     {
@@ -31,6 +31,7 @@ QJsonArray ModesCentreSEServer::getValues(const QString& code, int type, QDateTi
 
 void ModesCentreSEServer::incomingConnection(qintptr socketDescriptor)
 {
+    qCritical() << "incoming connection";
     QTcpSocket* socket = new QTcpSocket(this);
     connect(socket, &QTcpSocket::readyRead, this, [socket, this]() {
         m_requestData.append(socket->readAll());
@@ -50,7 +51,11 @@ void ModesCentreSEServer::incomingConnection(qintptr socketDescriptor)
         QJsonDocument incomingDoc = QJsonDocument::fromJson(body, &parseError);
 
         if (parseError.error != QJsonParseError::NoError)
+        {
+            qCritical() << "parse error" << parseError.error;
+            qCritical() << body;
             return;
+        }
 
         QJsonObject jsonObj = incomingDoc.object();
 

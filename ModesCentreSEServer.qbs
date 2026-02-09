@@ -2,8 +2,11 @@ import qbs
 
 QtApplication {
 
+    name: "Import PDG client/server"
+
     Depends { name: "Qt"; submodules: ['core', 'network', 'websockets', "quick"] }
 
+    cpp.cxxLanguageVersion: "c++20"
     consoleApplication: false
 
     Group {
@@ -11,6 +14,7 @@ QtApplication {
         files: [
             "modescentremodel.h",
             "modescentreseserver.h",
+            "restapiclient.h",
         ]
     }
 
@@ -20,6 +24,7 @@ QtApplication {
             "main.cpp",
             "modescentremodel.cpp",
             "modescentreseserver.cpp",
+            "restapiclient.cpp",
         ]
     }
 
