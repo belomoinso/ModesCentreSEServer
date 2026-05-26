@@ -46,6 +46,14 @@ void RestApiClient::setPort(int val)
     updateURL();
 }
 
+void RestApiClient::setObjectId(int val)
+{
+    if (m_objectId == val)
+        return;
+    m_objectId = val;
+    emit objectIdChanged();
+}
+
 void RestApiClient::updateURL()
 {
     m_url = QUrl(QString("%1%2:%3/update_pbr").arg(httpPrefix, m_ipaddr).arg(m_port));
@@ -70,7 +78,7 @@ void RestApiClient::sendValues()
             item[POWER] = values.at(hour);
             array.append(item);
         }
-        result[OBJ_ID] = 777;
+        result[OBJ_ID] = m_objectId;
         result[POINTS] = array;
 
         QNetworkRequest request(m_url);

@@ -23,6 +23,10 @@ public:
     int port() const { return m_port; }
     void setPort(int val);
 
+    Q_PROPERTY(int objectId READ objectId WRITE setObjectId NOTIFY objectIdChanged)
+    int objectId() const { return m_objectId; }
+    void setObjectId(int val);
+
     explicit RestApiClient(QObject* parent = nullptr);
     Q_INVOKABLE void sendValues();
 
@@ -30,6 +34,7 @@ signals:
     void modelChanged();
     void ipaddrChanged();
     void portChanged();
+    void objectIdChanged();
 
 private:
     void onFinished(QNetworkReply* reply);
@@ -40,6 +45,7 @@ private:
     QUrl m_url;
     QString m_ipaddr = "127.0.0.1";
     int m_port = 8080;
+    int m_objectId = 1;
     ModesCentreModel* m_model;
 };
 

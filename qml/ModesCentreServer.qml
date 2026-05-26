@@ -7,7 +7,7 @@ import modescentreserver 1.0
 Window {
     visible: true
     width: 650
-    height: 850
+    height: 900
     title: qsTr("Импорт ПДГ. Клиент/сервер")
 
     property ModesCentreServer modesCentreServer: ModesCentreServer{}
@@ -98,6 +98,44 @@ Window {
             Button {
                 text: "Отправить на сервер"
                 onClicked: restApiClient.sendValues()
+            }
+            Row {
+                Layout.columnSpan: 3
+                // height: 5
+            }
+            Text {
+                Layout.alignment: Qt.AlignLeft
+                font.pixelSize: textSize
+                Layout.columnSpan: 2
+                text: "Идентификатор"
+            }
+            TextField {
+                property var regExp: /^(?:[0-5]?[0-9]{1,4}|[6][0-5][0-9]{0,2})$/
+                property string previousValidText
+                implicitWidth: 140
+                implicitHeight: 30
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignRight
+                height: 30
+                maximumLength: 15
+                text: restApiClient.objectId
+                font.pixelSize: 17
+                background: Rectangle {
+                    id: brec
+                    property string borderColor: "gray"
+                    color: "transparent"
+                    border.color: borderColor
+                    border.width: 1
+                    anchors.margins: 0
+                    radius: 4
+                    }
+                onTextChanged: {
+                    restApiClient.objectId = text
+                    if (!regExp.test(text))
+                        brec.borderColor = "red"
+                    else
+                        brec.borderColor = "gray"
+                }
             }
         }
 
