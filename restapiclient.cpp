@@ -46,7 +46,7 @@ void RestApiClient::setPort(int val)
     updateURL();
 }
 
-void RestApiClient::setObjectId(int val)
+void RestApiClient::setObjectId(const QString& val)
 {
     if (m_objectId == val)
         return;
@@ -63,9 +63,6 @@ void RestApiClient::sendValues()
 {
     QDateTime yesterday = QDateTime::currentDateTime().addDays(-1);
     yesterday.setTime(QTime(0, 0));
-
-    // QJsonObject result;
-    // QJsonArray array;
 
     const auto fillDay = [this](const QVector<double>& values, const QDateTime& date) {
         QJsonObject result;

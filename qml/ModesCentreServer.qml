@@ -110,7 +110,6 @@ Window {
                 text: "Идентификатор"
             }
             TextField {
-                property var regExp: /^(?:[0-5]?[0-9]{1,4}|[6][0-5][0-9]{0,2})$/
                 property string previousValidText
                 implicitWidth: 140
                 implicitHeight: 30
@@ -131,10 +130,6 @@ Window {
                     }
                 onTextChanged: {
                     restApiClient.objectId = text
-                    if (!regExp.test(text))
-                        brec.borderColor = "red"
-                    else
-                        brec.borderColor = "gray"
                 }
             }
         }
