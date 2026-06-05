@@ -32,6 +32,7 @@ QtApplication {
         name: "qml"
         files: [
             "qml/ModesCentreServer.qml",
+            "qml/DailyColumn.qml",
         ]
     }
 

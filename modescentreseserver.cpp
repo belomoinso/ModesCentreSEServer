@@ -11,11 +11,13 @@ QJsonArray ModesCentreSEServer::getValues(const QString& code, int type, QDateTi
 {
     QJsonArray responseArray;
     const QDate today = QDate::currentDate();
-    const QVector<double>& values = (date.date() == today) ? m_model->todayValuesRef() : (date.date() == today.addDays(1)) ? m_model->tomorrowValuesRef()
-                                                                                                                           : m_model->yesterdayValuesRef();
+    const QVector<HourValue>& values = (date.date() == today) ? m_model->todayValuesRef() : (date.date() == today.addDays(1)) ? m_model->tomorrowValuesRef()
+                                                                                                                              : m_model->yesterdayValuesRef();
 
     for (int i = 0; i < 24; ++i)
     {
+        if (!values.at(i).checked)
+            continue;
         date.setTime(QTime(i, 0));
 
         QJsonObject item;
@@ -23,7 +25,7 @@ QJsonArray ModesCentreSEServer::getValues(const QString& code, int type, QDateTi
         item["objType"] = type;
         item["paramName"] = "p";
         item["dt"] = date.toString(Qt::ISODateWithMs);
-        item["value"] = values.at(i);
+        item["value"] = values.at(i).value;
         responseArray.append(item);
     }
     return responseArray;

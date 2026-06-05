@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/ModesCentreServer.qml</file>
+        <file>qml/DailyColumn.qml</file>
     </qresource>
 </RCC>

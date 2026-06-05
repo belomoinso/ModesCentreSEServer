@@ -162,177 +162,19 @@ Window {
             height: 5
         }
 
-        Column {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            ListView {
-                spacing: verticalSpacing
-                width: parent.width
-                height: parent.height
-                model: modesCentreServer.model
-                delegate: Item {
-                    GridLayout {
-                        columnSpacing: 30
-                        anchors.fill: parent
-                        columns: 2
-
-                        Text {
-                            font.pixelSize: textSize
-                            text: model.hour
-                        }
-                        TextField {
-                            property var regExp: /^[0-9]+(\.([0-9]{0,2})?)?$/
-                            property string previousValidText
-                            implicitWidth: 100
-                            implicitHeight: 30
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignRight
-                            height: 30
-                            text: model.yesterday
-                            font.pixelSize: 17
-                            background: Rectangle {
-                                id: bord
-                                property string borderColor: "gray"
-                                color: "transparent"
-                                border.color: borderColor
-                                border.width: 1
-                                anchors.margins: 0
-                                radius: 4
-                                }
-                            onAccepted: {
-                                bord.borderColor = "gray"
-                                model.yesterday = text
-                            }
-                            onTextChanged: {
-                                if (model.yesterday !== text)
-                                    bord.borderColor = "red"
-                                if (text.length == 0)
-                                    return
-                                if (!regExp.test(text))
-                                    text = previousValidText
-                                else
-                                    previousValidText = text
-                            }
-                        }
-                    }
-                }
-            }
+        DailyColumn {
+            scheduleModel: modesCentreServer.model
+            dayRole: "yesterday"
         }
 
-        Column {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            ListView {
-                spacing: verticalSpacing
-                width: parent.width
-                height: parent.height
-                model: modesCentreServer.model
-                delegate: Item {
-                    GridLayout {
-                        columnSpacing: 30
-                        anchors.fill: parent
-                        columns: 2
-
-                        Text {
-                            font.pixelSize: textSize
-                            text: model.hour
-                        }
-                        TextField {
-                            property var regExp: /^[0-9]+(\.([0-9]{0,2})?)?$/
-                            property string previousValidText
-                            implicitWidth: 100
-                            implicitHeight: 30
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignRight
-                            height: 30
-                            text: model.today
-                            font.pixelSize: 17
-                            background: Rectangle {
-                                id: bordr
-                                property string borderColor: "gray"
-                                color: "transparent"
-                                border.color: borderColor
-                                border.width: 1
-                                anchors.margins: 0
-                                radius: 4
-                                }
-                            onAccepted: {
-                                bordr.borderColor = "gray"
-                                model.today = text
-                            }
-                            onTextChanged: {
-                                if (model.today !== text)
-                                    bordr.borderColor = "red"
-                                if (text.length == 0)
-                                    return
-                                if (!regExp.test(text))
-                                    text = previousValidText
-                                else
-                                    previousValidText = text
-                            }
-                        }
-                    }
-                }
-            }
+        DailyColumn {
+            scheduleModel: modesCentreServer.model
+            dayRole: "today"
         }
 
-        Column {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            ListView {
-                spacing: verticalSpacing
-                width: parent.width
-                height: parent.height
-                model: modesCentreServer.model
-                delegate: Item {
-                    GridLayout {
-                        columnSpacing: 20
-                        anchors.fill: parent
-                        columns: 2
-
-                        Text {
-                            font.pixelSize: textSize
-                            text: model.hour
-                        }
-                        TextField {
-                            property var regExp: /^[0-9]+(\.([0-9]{0,2})?)?$/
-                            property string previousValidText
-                            implicitWidth: 100
-                            implicitHeight: 30
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignRight
-                            height: 30
-                            text: model.tomorrow
-                            font.pixelSize: 17
-                            background: Rectangle {
-                                id: bordRec
-                                property string borderColor: "gray"
-                                color: "transparent"
-                                border.color: borderColor
-                                border.width: 1
-                                anchors.margins: 0
-                                radius: 4
-                                }
-                            onAccepted: {
-                                bordRec.borderColor = "gray"
-                                model.tomorrow = text
-                            }
-                            onTextChanged: {
-                                if (model.tomorrow !== text)
-                                    bordRec.borderColor = "red"
-                                if (text.length == 0)
-                                    return
-                                if (!regExp.test(text))
-                                    text = previousValidText
-                                else
-                                    previousValidText = text
-                            }
-                        }
-                    }
-                }
-            }
+        DailyColumn {
+            scheduleModel: modesCentreServer.model
+            dayRole: "tomorrow"
         }
-
     }
-
 }

@@ -3,6 +3,12 @@
 
 #include <QAbstractListModel>
 
+struct HourValue
+{
+    double value = 0;
+    bool checked = true;
+};
+
 class ModesCentreModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -12,7 +18,10 @@ class ModesCentreModel : public QAbstractListModel
         YesterdayRole = Qt::UserRole,
         TodayRole,
         TomorrowRole,
-        HourRole
+        HourRole,
+        YesterdayCheckRole,
+        TodayCheckRole,
+        TomorrowCheckRole,
     };
 
 public:
@@ -25,14 +34,14 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    QVector<double>& yesterdayValuesRef() { return m_yesterdayValues; }
-    QVector<double>& todayValuesRef() { return m_todayValues; }
-    QVector<double>& tomorrowValuesRef() { return m_tomorrowValues; }
+    QVector<HourValue>& yesterdayValuesRef() { return m_yesterdayValues; }
+    QVector<HourValue>& todayValuesRef() { return m_todayValues; }
+    QVector<HourValue>& tomorrowValuesRef() { return m_tomorrowValues; }
 
 private:
-    QVector<double> m_yesterdayValues;
-    QVector<double> m_todayValues;
-    QVector<double> m_tomorrowValues;
+    QVector<HourValue> m_yesterdayValues;
+    QVector<HourValue> m_todayValues;
+    QVector<HourValue> m_tomorrowValues;
 };
 
 #endif // MODESCENTREMODEL_H

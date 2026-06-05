@@ -64,15 +64,17 @@ void RestApiClient::sendValues()
     QDateTime yesterday = QDateTime::currentDateTime().addDays(-1);
     yesterday.setTime(QTime(0, 0));
 
-    const auto fillDay = [this](const QVector<double>& values, const QDateTime& date) {
+    const auto fillDay = [this](const QVector<HourValue>& values, const QDateTime& date) {
         QJsonObject result;
         QJsonArray array;
         for (int hour = 0; hour < 24; hour++)
         {
+            if (!values.at(hour).checked)
+                continue;
             QJsonObject item;
             const auto time = date.addSecs(3600 * hour);
             item[TIME] = QString("%1Z").arg(time.toString(Qt::ISODateWithMs));
-            item[POWER] = values.at(hour);
+            item[POWER] = values.at(hour).value;
             array.append(item);
         }
         result[OBJ_ID] = m_objectId;
